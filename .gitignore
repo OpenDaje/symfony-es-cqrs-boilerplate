@@ -26,3 +26,7 @@ todo.txt
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+###> bamarni/composer-bin-plugin ###
+/tools/**/vendor
+###< bamarni/composer-bin-plugin ###
