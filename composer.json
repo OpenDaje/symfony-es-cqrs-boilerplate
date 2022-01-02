@@ -1,5 +1,7 @@
 {
+    "name": "opendaje/symfony-es-cqrs-boilerplate",
     "type": "project",
+    "description": "symfony es cqrs boilerplate",
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,
@@ -29,12 +31,14 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/",
+            "IdentityAccess\\": "srcIam/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "App\\Tests\\": "tests/",
+            "IdentityAccess\\Tests\\": "srcIam/tests/"
         }
     },
     "replace": {
