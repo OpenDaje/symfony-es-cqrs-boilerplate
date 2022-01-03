@@ -10,7 +10,8 @@ security:
         users_in_memory:
             memory:
                 users:
-                    john_admin: { password: '$2y$13$CWgBuFmpxnPwkPipxxXTJeJZuNJBYr9MkorMrAYompdZ45TQFc1Qm', roles: ['ROLE_ADMIN'] }
+                    # account: john_admin|foobar
+                    john_admin: { password: '$2y$13$c6Cy.HtaGlrBji.xDOUIIu5hxMEJ/fQ4gfvnuR/oRhgGdDQ0sSWiy', roles: ['ROLE_ADMIN'] }
 
     firewalls:
         dev:
@@ -19,6 +20,13 @@ security:
         main:
             lazy: true
             provider: users_in_memory
+
+            form_login:
+                # "login" is the name of the route created previously
+                login_path: placeholder_login
+                check_path: placeholder_login
+            logout:
+                path: placeholder_logout
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
