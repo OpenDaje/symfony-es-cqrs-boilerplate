@@ -2,6 +2,9 @@
     "bamarni/composer-bin-plugin": {
         "version": "1.4.1"
     },
+    "beberlei/assert": {
+        "version": "v3.3.2"
+    },
     "brick/math": {
         "version": "0.9.3"
     },
@@ -14,6 +17,9 @@
     "ecotone/ecotone": {
         "version": "1.8.2"
     },
+    "ecotone/pdo-event-sourcing": {
+        "version": "1.8.2"
+    },
     "ecotone/symfony-bundle": {
         "version": "1.8.2"
     },
@@ -22,6 +28,9 @@
     },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.4.1"
+    },
+    "marc-mabe/php-enum": {
+        "version": "v4.4.0"
     },
     "monolog/monolog": {
         "version": "2.3.5"
@@ -80,6 +89,24 @@
             ".env.test",
             "phpunit.xml.dist",
             "tests/bootstrap.php"
+        ]
+    },
+    "prooph/common": {
+        "version": "v4.5.0"
+    },
+    "prooph/event-store": {
+        "version": "v7.6.1"
+    },
+    "prooph/pdo-event-store": {
+        "version": "1.13",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.7",
+            "ref": "f35cb6fe1edf5853c6d78d429c8ae3564bdd1bd8"
+        },
+        "files": [
+            "config/packages/prooph_pdo_event_store.yaml"
         ]
     },
     "psr/cache": {
