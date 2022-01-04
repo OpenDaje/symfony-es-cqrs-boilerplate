@@ -8,11 +8,52 @@
     "brick/math": {
         "version": "0.9.3"
     },
+    "doctrine/common": {
+        "version": "3.2.1"
+    },
+    "doctrine/doctrine-bundle": {
+        "version": "2.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.4",
+            "ref": "f98f1affe028f8153a459d15f220ada3826b5aa2"
+        },
+        "files": [
+            "config/packages/doctrine.yaml",
+            "config/packages/prod/doctrine.yaml",
+            "config/packages/test/doctrine.yaml",
+            "src/Entity/.gitignore",
+            "src/Repository/.gitignore"
+        ]
+    },
+    "doctrine/doctrine-migrations-bundle": {
+        "version": "3.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.1",
+            "ref": "ee609429c9ee23e22d6fa5728211768f51ed2818"
+        },
+        "files": [
+            "config/packages/doctrine_migrations.yaml",
+            "migrations/.gitignore"
+        ]
+    },
     "doctrine/inflector": {
         "version": "2.0.4"
     },
     "doctrine/instantiator": {
         "version": "1.4.0"
+    },
+    "doctrine/migrations": {
+        "version": "3.3.2"
+    },
+    "doctrine/orm": {
+        "version": "2.10.4"
+    },
+    "doctrine/sql-formatter": {
+        "version": "1.1.2"
     },
     "ecotone/ecotone": {
         "version": "1.8.2"
@@ -22,6 +63,9 @@
     },
     "ecotone/symfony-bundle": {
         "version": "1.8.2"
+    },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.5"
     },
     "laminas/laminas-code": {
         "version": "4.5.1"
@@ -40,9 +84,6 @@
     },
     "nikic/php-parser": {
         "version": "v4.13.2"
-    },
-    "ocramius/proxy-manager": {
-        "version": "2.13.0"
     },
     "phar-io/manifest": {
         "version": "2.0.3"
@@ -208,6 +249,9 @@
     "symfony/deprecation-contracts": {
         "version": "v3.0.0"
     },
+    "symfony/doctrine-bridge": {
+        "version": "v5.4.2"
+    },
     "symfony/dom-crawler": {
         "version": "v5.4.2"
     },
@@ -335,6 +379,9 @@
     "symfony/property-info": {
         "version": "v5.4.2"
     },
+    "symfony/proxy-manager-bridge": {
+        "version": "v5.4.2"
+    },
     "symfony/routing": {
         "version": "5.4",
         "recipe": {
@@ -431,9 +478,6 @@
     },
     "twig/twig": {
         "version": "v3.3.4"
-    },
-    "webimpress/safe-writer": {
-        "version": "2.2.0"
     },
     "webmozart/assert": {
         "version": "1.10.0"
