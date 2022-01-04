@@ -24,11 +24,18 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    Doctrine\DBAL\Connection:
-        factory: ["Doctrine\\DBAL\\DriverManager","getConnection"]
-        arguments:
-            - url: "%env(resolve:DATABASE_DSN)%"
+
+    ####################################################################################################################
+    ####################################################################################################################
+    #
+    #    IDENTITY ACCESS CONTEXT
+    #
+    ####################################################################################################################
+    ####################################################################################################################
+
+    IdentityAccess\:
+        resource: '../srcIam/src/'
 
     Enqueue\Dbal\DbalConnectionFactory:
-        factory: ['Ecotone\Dbal\DbalConnection', 'create']
-        arguments: ['@Doctrine\DBAL\Connection']
+        factory: [ 'Ecotone\Dbal\DbalConnection', 'createForManagerRegistry' ]
+        arguments: [ "@doctrine","default" ]
