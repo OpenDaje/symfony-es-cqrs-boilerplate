@@ -58,6 +58,9 @@
     "ecotone/ecotone": {
         "version": "1.8.2"
     },
+    "ecotone/jms-converter": {
+        "version": "1.8.2"
+    },
     "ecotone/pdo-event-sourcing": {
         "version": "1.8.2"
     },
@@ -66,6 +69,12 @@
     },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
+    },
+    "jms/metadata": {
+        "version": "2.6.1"
+    },
+    "jms/serializer": {
+        "version": "3.17.1"
     },
     "laminas/laminas-code": {
         "version": "4.5.1"
@@ -102,6 +111,9 @@
     },
     "phpspec/prophecy": {
         "version": "v1.15.0"
+    },
+    "phpstan/phpdoc-parser": {
+        "version": "1.2.0"
     },
     "phpunit/php-code-coverage": {
         "version": "9.2.10"
