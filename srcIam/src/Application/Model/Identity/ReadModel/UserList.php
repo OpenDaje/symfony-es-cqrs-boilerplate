@@ -3,17 +3,21 @@
 namespace IdentityAccess\Application\Model\Identity\ReadModel;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Ecotone\EventSourcing\Attribute\Projection;
 use Ecotone\EventSourcing\Attribute\ProjectionDelete;
 use Ecotone\EventSourcing\Attribute\ProjectionInitialization;
 use Ecotone\EventSourcing\Attribute\ProjectionReset;
 use Ecotone\Modelling\Attribute\EventHandler;
+use Ecotone\Modelling\Attribute\QueryHandler;
 use IdentityAccess\Application\Model\Identity\Event\UserWasRegistered;
 use IdentityAccess\Application\Model\Identity\User;
 
 #[Projection('UserList', User::class)]
 class UserList
 {
+    public const GET_USER_LIST = "getUserList";
+
     private Connection $connection;
 
     public function __construct(Connection $connection)
@@ -55,5 +59,19 @@ SQL);
         $this->connection->executeStatement(<<<SQL
     DROP TABLE users
 SQL);
+    }
+
+    #[QueryHandler(self::GET_USER_LIST)]
+    public function getUserList(): array
+    {
+        try {
+            return $this->connection->executeQuery(
+                <<<SQL
+    SELECT * FROM users
+SQL
+            )->fetchAllAssociative();
+        } catch (TableNotFoundException) {
+            return [];
+        }
     }
 }
