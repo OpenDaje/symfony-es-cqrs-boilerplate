@@ -1,0 +1,59 @@
+<?php declare(strict_types=1);
+
+namespace IdentityAccess\Application\Model\Identity\ReadModel;
+
+use Doctrine\DBAL\Connection;
+use Ecotone\EventSourcing\Attribute\Projection;
+use Ecotone\EventSourcing\Attribute\ProjectionDelete;
+use Ecotone\EventSourcing\Attribute\ProjectionInitialization;
+use Ecotone\EventSourcing\Attribute\ProjectionReset;
+use Ecotone\Modelling\Attribute\EventHandler;
+use IdentityAccess\Application\Model\Identity\Event\UserWasRegistered;
+use IdentityAccess\Application\Model\Identity\User;
+
+#[Projection('UserList', User::class)]
+class UserList
+{
+    private Connection $connection;
+
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+    }
+
+    #[EventHandler]
+    public function addUser(UserWasRegistered $event, array $metadata): void
+    {
+        $result = $this->connection->executeStatement(<<<SQL
+    INSERT INTO users VALUES (?,?,?)
+SQL, [$event->getUserId(), $event->getEmail(), $event->getHashedPassword()]);
+    }
+
+    #[ProjectionInitialization]
+    public function initialization(): void
+    {
+        $this->connection->executeStatement(<<<SQL
+    CREATE TABLE IF NOT EXISTS users (
+        user_id VARCHAR(36) PRIMARY KEY,
+        email VARCHAR(25),
+        password VARCHAR(25)
+    )
+SQL);
+    }
+
+    #[ProjectionReset]
+    public function reset(): void
+    {
+        $this->connection->executeStatement(<<<SQL
+    DELETE FROM users
+SQL);
+    }
+
+    #[ProjectionDelete]
+    public function delete(): void
+    {
+        $this->connection->executeStatement(<<<SQL
+    DROP TABLE users
+SQL);
+    }
+}
