@@ -18,7 +18,7 @@ class User
     use WithAggregateVersioning;
 
     #[AggregateIdentifier]
-    private string $id;
+    private string $userId;
 
     private string $email;
 
@@ -33,7 +33,7 @@ class User
     #[EventSourcingHandler]
     public function applyUserWasRegistered(UserWasRegistered $event): void
     {
-        $this->id = $event->getUserId();
+        $this->userId = $event->getUserId();
         $this->email = $event->getEmail();
         $this->hashedPassword = $event->getHashedPassword();
     }
