@@ -1,13 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{# ... #}
-
 {% block body %}
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form action="{{ path('placeholder_login') }}" method="post">
+    <form action="{{ path('login') }}" method="post">
         <label for="username">Email:</label>
         <input type="text" id="username" name="_username" value="{{ last_username }}"/>
 
