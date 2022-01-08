@@ -12,11 +12,14 @@ use Ecotone\Modelling\Attribute\EventHandler;
 use Ecotone\Modelling\Attribute\QueryHandler;
 use IdentityAccess\Application\Model\Identity\Event\UserWasRegistered;
 use IdentityAccess\Application\Model\Identity\User;
+use IdentityAccess\Infrastructure\Authentication\SecurityUser;
 
 #[Projection('UserList', User::class)]
 class UserList
 {
     public const GET_USER_LIST = "getUserList";
+
+    public const GET_SECURITY_USER = "getSecurityUser";
 
     private Connection $connection;
 
@@ -73,5 +76,17 @@ SQL
         } catch (TableNotFoundException) {
             return [];
         }
+    }
+
+    #[QueryHandler(self::GET_SECURITY_USER)]
+    public function getSecurityUser(string $securityIdentifier): SecurityUser
+    {
+        $userData = $this->connection->executeQuery(<<<SQL
+    SELECT email, password FROM users WHERE email = :email
+SQL, [
+            "email" => $securityIdentifier,
+        ])->fetchAllAssociative()[0];
+
+        return SecurityUser::createFromReadModel($userData['email'], $userData['password']);
     }
 }
