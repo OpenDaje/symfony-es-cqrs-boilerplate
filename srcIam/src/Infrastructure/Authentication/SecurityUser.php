@@ -25,7 +25,8 @@ class SecurityUser implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $passwordHasher->hashPassword(
             new self('', ''),
-            $plaintextPassword);
+            $plaintextPassword
+        );
     }
 
     public static function createFromReadModel(string $email, string $password): self
