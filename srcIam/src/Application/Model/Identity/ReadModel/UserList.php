@@ -40,7 +40,7 @@ SQL, [$event->getUserId(), $event->getEmail(), $event->getHashedPassword()]);
     CREATE TABLE IF NOT EXISTS users (
         user_id VARCHAR(36) PRIMARY KEY,
         email VARCHAR(25),
-        password VARCHAR(25)
+        password VARCHAR(200)
     )
 SQL);
     }
