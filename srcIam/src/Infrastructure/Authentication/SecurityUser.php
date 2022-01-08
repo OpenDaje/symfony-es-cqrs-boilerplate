@@ -2,6 +2,7 @@
 
 namespace IdentityAccess\Infrastructure\Authentication;
 
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -13,16 +14,18 @@ class SecurityUser implements UserInterface, PasswordAuthenticatedUserInterface
 
     private string $password;
 
-    public function __construct(string $password, string $email, array $roles = [])
+    private function __construct(string $password, string $email, array $roles = [])
     {
         $this->email = $email;
         $this->roles = $roles;
         $this->password = $password;
     }
 
-    public static function createForRegistration(): self
+    public static function encryptPassword(string $plaintextPassword, UserPasswordHasherInterface $passwordHasher): string
     {
-        return new self('', '', []);
+        return $passwordHasher->hashPassword(
+            new self('', ''),
+            $plaintextPassword);
     }
 
     public static function createFromReadModel(string $email, string $password): self
