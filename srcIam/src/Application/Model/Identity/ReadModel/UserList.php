@@ -30,9 +30,12 @@ class UserList
     #[EventHandler]
     public function addUser(UserWasRegistered $event, array $metadata): void
     {
-        $result = $this->connection->executeStatement(<<<SQL
-    INSERT INTO users VALUES (?,?,?)
-SQL, [$event->getUserId(), $event->getEmail(), $event->getHashedPassword()]);
+        $this->connection->executeStatement(
+            <<<SQL
+                INSERT INTO users VALUES (?,?,?)
+            SQL,
+            [$event->getUserId(), $event->getEmail(), $event->getHashedPassword()]
+        );
     }
 
     #[EventHandler]
@@ -48,29 +51,35 @@ SQL, [$event->getUserId(), $event->getEmail(), $event->getHashedPassword()]);
     #[ProjectionInitialization]
     public function initialization(): void
     {
-        $this->connection->executeStatement(<<<SQL
-    CREATE TABLE IF NOT EXISTS users (
-        user_id VARCHAR(36) PRIMARY KEY,
-        email VARCHAR(25),
-        password VARCHAR(200)
-    )
-SQL);
+        $this->connection->executeStatement(
+            <<<SQL
+                CREATE TABLE IF NOT EXISTS users (
+                    user_id VARCHAR(36) PRIMARY KEY,
+                    email VARCHAR(25),
+                    password VARCHAR(200)
+                )
+            SQL
+        );
     }
 
     #[ProjectionReset]
     public function reset(): void
     {
-        $this->connection->executeStatement(<<<SQL
-    DELETE FROM users
-SQL);
+        $this->connection->executeStatement(
+            <<<SQL
+                DELETE FROM users
+            SQL
+        );
     }
 
     #[ProjectionDelete]
     public function delete(): void
     {
-        $this->connection->executeStatement(<<<SQL
-    DROP TABLE users
-SQL);
+        $this->connection->executeStatement(
+            <<<SQL
+                DROP TABLE users
+            SQL
+        );
     }
 
     #[QueryHandler(self::GET_USER_LIST)]
@@ -79,8 +88,8 @@ SQL);
         try {
             return $this->connection->executeQuery(
                 <<<SQL
-    SELECT * FROM users
-SQL
+                    SELECT * FROM users
+                SQL
             )->fetchAllAssociative();
         } catch (TableNotFoundException) {
             return [];
@@ -90,11 +99,14 @@ SQL
     #[QueryHandler(self::GET_SECURITY_USER)]
     public function getSecurityUser(string $securityIdentifier): SecurityUser
     {
-        $userData = $this->connection->executeQuery(<<<SQL
-    SELECT email, password FROM users WHERE email = :email
-SQL, [
-            "email" => $securityIdentifier,
-        ])->fetchAllAssociative()[0];
+        $userData = $this->connection->executeQuery(
+            <<<SQL
+                SELECT email, password FROM users WHERE email = :email
+            SQL,
+            [
+                "email" => $securityIdentifier,
+            ]
+        )->fetchAllAssociative()[0];
 
         return SecurityUser::createFromReadModel($userData['email'], $userData['password']);
     }
