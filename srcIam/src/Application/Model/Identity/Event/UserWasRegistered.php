@@ -4,17 +4,11 @@ namespace IdentityAccess\Application\Model\Identity\Event;
 
 class UserWasRegistered
 {
-    private string $userId;
-
-    private string $email;
-
-    private string $hashedPassword;
-
-    public function __construct(string $userId, string $email, string $hashedPassword)
-    {
-        $this->userId = $userId;
-        $this->email = $email;
-        $this->hashedPassword = $hashedPassword;
+    public function __construct(
+        private string $userId,
+        private string $email,
+        private string $hashedPassword
+    ) {
     }
 
     public function getUserId(): string

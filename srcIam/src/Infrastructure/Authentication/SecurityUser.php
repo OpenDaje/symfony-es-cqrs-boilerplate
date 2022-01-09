@@ -8,17 +8,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class SecurityUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    private string $email;
-
-    private array $roles = [];
-
-    private string $password;
-
-    private function __construct(string $password, string $email, array $roles = [])
-    {
-        $this->email = $email;
-        $this->roles = $roles;
-        $this->password = $password;
+    private function __construct(
+        private string $password,
+        private string $email,
+        private array $roles = []
+    ) {
     }
 
     public static function encryptPassword(string $plaintextPassword, UserPasswordHasherInterface $passwordHasher): string

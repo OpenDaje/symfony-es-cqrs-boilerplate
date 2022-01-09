@@ -22,11 +22,9 @@ class UserList
 
     public const GET_SECURITY_USER = "getSecurityUser";
 
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     #[EventHandler]

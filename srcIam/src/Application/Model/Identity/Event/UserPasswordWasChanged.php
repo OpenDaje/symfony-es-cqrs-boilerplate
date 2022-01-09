@@ -4,14 +4,10 @@ namespace IdentityAccess\Application\Model\Identity\Event;
 
 class UserPasswordWasChanged
 {
-    private string $userId;
-
-    private string $password;
-
-    public function __construct(string $userId, string $password)
-    {
-        $this->userId = $userId;
-        $this->password = $password;
+    public function __construct(
+        private string $userId,
+        private string $password
+    ) {
     }
 
     public function getUserId(): string
