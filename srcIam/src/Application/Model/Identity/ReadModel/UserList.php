@@ -10,6 +10,7 @@ use Ecotone\EventSourcing\Attribute\ProjectionInitialization;
 use Ecotone\EventSourcing\Attribute\ProjectionReset;
 use Ecotone\Modelling\Attribute\EventHandler;
 use Ecotone\Modelling\Attribute\QueryHandler;
+use IdentityAccess\Application\Model\Identity\Event\UserPasswordWasChanged;
 use IdentityAccess\Application\Model\Identity\Event\UserWasRegistered;
 use IdentityAccess\Application\Model\Identity\User;
 use IdentityAccess\Infrastructure\Authentication\SecurityUser;
@@ -34,6 +35,16 @@ class UserList
         $result = $this->connection->executeStatement(<<<SQL
     INSERT INTO users VALUES (?,?,?)
 SQL, [$event->getUserId(), $event->getEmail(), $event->getHashedPassword()]);
+    }
+
+    #[EventHandler]
+    public function changePassword(UserPasswordWasChanged $event, array $metadata): void
+    {
+        $this->connection->update('users', [
+            "password" => $event->getPassword(),
+        ], [
+            "user_id" => $event->getUserId(),
+        ]);
     }
 
     #[ProjectionInitialization]
