@@ -1,0 +1,15 @@
+openapi: 3.0.0
+info:
+  title: Symfony cqrs-es boilerplate
+  version: '0.1'
+  contact:
+    name: Open Daje
+    email: opendaje@example.com
+    url: 'https://opendaje.example.com'
+  license:
+    name: MIT
+    #url: 'https://github.com/OpenDaje/symfony-es-cqrs-boilerplate/blob/main/LICENSE'
+  description: An symfony boilerplate repository
+servers:
+  - url: 'http://localhost:8080'
+    description: Local
