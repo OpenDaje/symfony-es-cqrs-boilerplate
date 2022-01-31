@@ -16,12 +16,6 @@ todo.txt
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
-
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
@@ -30,3 +24,8 @@ todo.txt
 ###> bamarni/composer-bin-plugin ###
 /tools/**/vendor
 ###< bamarni/composer-bin-plugin ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
