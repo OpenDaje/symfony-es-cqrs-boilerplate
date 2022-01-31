@@ -19,7 +19,7 @@ class UserListController extends AbstractController
         $this->queryBus = $queryBus;
     }
 
-    #[Route("/users", name: 'api_users', methods: ["GET"])]
+    #[Route("/api/users", name: 'api_users', methods: ["GET"])]
     public function __invoke(Request $request): Response
     {
         $users = $this->queryBus->sendWithRouting(UserList::GET_USER_LIST);
