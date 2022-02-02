@@ -18,7 +18,7 @@ parameters:
     #bootstrapFiles:
         #- bin/.phpunit/phpunit/vendor/autoload.php
 
-    excludes_analyse:
+    excludePaths:
         - tests/bootstrap.php
 
     tmpDir: var/tools/phpstan/
