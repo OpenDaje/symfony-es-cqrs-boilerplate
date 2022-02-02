@@ -16,14 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class NewAccountController extends AbstractController
 {
-    private CommandBus $commandBus;
-
-    private UserPasswordHasherInterface $passwordHasher;
-
-    public function __construct(CommandBus $commandBus, UserPasswordHasherInterface $passwordHasher)
-    {
-        $this->commandBus = $commandBus;
-        $this->passwordHasher = $passwordHasher;
+    public function __construct(
+        private CommandBus $commandBus,
+        private UserPasswordHasherInterface $passwordHasher,
+    ) {
     }
 
     #[Route("/auth/register", name: 'auth_register', methods: ["POST"])]
