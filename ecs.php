@@ -24,6 +24,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         __DIR__ . '/srcIam/src',
         __DIR__ . '/srcIam/tests',
         __DIR__ . '/ecs.php',
+        __DIR__ . '/rector.php',
     ]);
 
     $parameters->set(
