@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 class UuidGenerator implements IdentityGenerator
 {
-    public function generateUuid()
+    public function generateIdentity()
     {
         return Uuid::uuid4()->toString();
     }

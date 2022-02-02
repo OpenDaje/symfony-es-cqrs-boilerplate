@@ -13,6 +13,6 @@ class UserIdentityFactory
 
     public function nextId(): UserId
     {
-        return UserId::fromString($this->generator->generateUuid());
+        return UserId::fromString($this->generator->generateIdentity());
     }
 }
