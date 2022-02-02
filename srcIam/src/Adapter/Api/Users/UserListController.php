@@ -12,11 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserListController extends AbstractController
 {
-    private QueryBus $queryBus;
-
-    public function __construct(QueryBus $queryBus)
-    {
-        $this->queryBus = $queryBus;
+    public function __construct(
+        private QueryBus $queryBus
+    ) {
     }
 
     #[Route("/api/users", name: 'api_users', methods: ["GET"])]
