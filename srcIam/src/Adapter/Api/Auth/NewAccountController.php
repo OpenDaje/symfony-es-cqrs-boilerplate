@@ -6,9 +6,8 @@ use Ecotone\Modelling\CommandBus;
 use IdentityAccess\Application\Model\Identity\Command\RegisterUser;
 use IdentityAccess\Application\Model\Identity\User;
 use IdentityAccess\Infrastructure\Authentication\SecurityUser;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -25,16 +24,18 @@ class NewAccountController extends AbstractController
     #[Route("/auth/register", name: 'auth_register', methods: ["POST"])]
     public function register(Request $request): Response
     {
-        $plaintextPassword = $request->request->get('hashedPassword');
+        $payload = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $command = new RegisterUser(
-            $request->request->get('email'),
-            SecurityUser::encryptPassword($plaintextPassword, $this->passwordHasher),
-            Uuid::uuid4()->toString()
+            $payload['email'],
+            SecurityUser::encryptPassword($payload['password'], $this->passwordHasher),
+            $payload['userId'],
         );
 
         $this->commandBus->sendWithRouting(User::REGISTER_USER, $command);
 
-        return new RedirectResponse("/");
+        $response = new JsonResponse();
+        $response->setStatusCode(Response::HTTP_NO_CONTENT);
+        return $response;
     }
 }
