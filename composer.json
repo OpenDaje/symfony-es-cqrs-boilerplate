@@ -33,7 +33,8 @@
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
             "symfony/flex": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "bamarni/composer-bin-plugin": true
         },
         "optimize-autoloader": true,
         "preferred-install": {
