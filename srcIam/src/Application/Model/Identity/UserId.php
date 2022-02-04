@@ -9,9 +9,9 @@ class UserId implements \Stringable
     ) {
     }
 
-    public static function fromString(string $identity): static
+    public static function fromString(string $identity): self
     {
-        return new static($identity);
+        return new self($identity);
     }
 
     public function equals(UserId $other): bool

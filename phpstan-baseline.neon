@@ -15,8 +15,3 @@ parameters:
 			count: 1
 			path: srcIam/src/Application/Model/Identity/User.php
 
-		-
-			message: "#^Unsafe usage of new static\\(\\)\\.$#"
-			count: 1
-			path: srcIam/src/Application/Model/Identity/UserId.php
-
