@@ -105,3 +105,30 @@ jobs:
 
       - name: Run phpstan
         run: vendor/bin/phpstan --configuration=phpstan.neon --ansi
+
+
+  unit-test:
+    runs-on: ubuntu-18.04
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        php:
+          - '8.0'
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: memory_limit=-1
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer install --prefer-dist --no-progress --ansi
+
+      - name: Run unit tests
+        run: vendor/bin/phpunit --testsuite=unit --testdox --no-interaction
