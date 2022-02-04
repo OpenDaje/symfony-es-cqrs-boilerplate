@@ -12,13 +12,12 @@ env:
 jobs:
   lint-composer:
     runs-on: ubuntu-18.04
-    timeout-minutes: 5
+    timeout-minutes: 2
     strategy:
       matrix:
         php:
           - '8.0'
       fail-fast: true
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -44,3 +43,65 @@ jobs:
       - name: Run composer normalize
         run: |
           composer-normalize --dry-run --ansi
+
+
+  coding-standard:
+    runs-on: ubuntu-18.04
+    timeout-minutes: 3
+    strategy:
+      matrix:
+        php:
+          - '8.0'
+      fail-fast: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.15.0
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: memory_limit=-1
+          coverage: none
+          tools: composer
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --prefer-dist --no-progress --ansi --no-scripts
+
+      - name: Install easy-coding-standard
+        run: |
+          composer bin ecs install  --no-progress --ansi
+
+      - name: Run easy-coding-standard
+        run: |
+          ./vendor/bin/ecs
+
+
+  phpstan:
+    runs-on: ubuntu-18.04
+    timeout-minutes: 3
+    strategy:
+      matrix:
+        php:
+          - '8.0'
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: memory_limit=-1
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer install --prefer-dist --no-progress --ansi
+          composer bin phpstan install
+
+      - name: Run phpstan
+        run: vendor/bin/phpstan --configuration=phpstan.neon --ansi
