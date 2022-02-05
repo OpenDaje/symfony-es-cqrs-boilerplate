@@ -2,8 +2,6 @@ name: Commit stage
 
 on:
   push:
-    paths:
-      - "iam/**"
 
 env:
   PHP_EXTENSIONS: ctype, iconv, json, curl, gd, intl, opcache, openssl, mbstring, mysql, pdo_sqlite
@@ -110,6 +108,10 @@ jobs:
   unit-test:
     runs-on: ubuntu-18.04
     timeout-minutes: 5
+    needs:
+      - lint-composer
+      - coding-standard
+      - phpstan
     strategy:
       matrix:
         php:
