@@ -1,1 +1,3 @@
-# symfony-es-cqrs-boilerplate
+[![Commit stage](https://github.com/OpenDaje/symfony-es-cqrs-boilerplate/actions/workflows/commit-stage.yaml/badge.svg)](https://github.com/OpenDaje/symfony-es-cqrs-boilerplate/actions/workflows/commit-stage.yaml) [![Acceptance stage](https://github.com/OpenDaje/symfony-es-cqrs-boilerplate/actions/workflows/acceptance-stage.yaml/badge.svg)](https://github.com/OpenDaje/symfony-es-cqrs-boilerplate/actions/workflows/acceptance-stage.yaml)
+
+# Symfony ES-CQRS boilerplate
