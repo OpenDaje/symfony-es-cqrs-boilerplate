@@ -1,4 +1,0 @@
-ecotone:
-  loadSrcNamespaces: true
-  namespaces:
-    - 'IdentityAccess'
