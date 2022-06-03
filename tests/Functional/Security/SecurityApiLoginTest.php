@@ -43,6 +43,7 @@ class SecurityApiLoginTest extends WebTestCase
      */
     public function testGetPages()
     {
+        self::markTestIncomplete();
         $client = $this->createAuthenticatedClient('john_admin', 'foobar');
         $client->request('GET', '/api/users');
 

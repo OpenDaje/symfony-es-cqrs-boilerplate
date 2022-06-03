@@ -20,3 +20,8 @@ parameters:
 			count: 1
 			path: srcIam/tests/Unit/UserIdTest.php
 
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: tests/Functional/Security/SecurityApiLoginTest.php
+
