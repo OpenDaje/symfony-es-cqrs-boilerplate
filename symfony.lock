@@ -107,7 +107,7 @@
         "version": "1.8.2"
     },
     "ecotone/symfony-bundle": {
-        "version": "1.8.2"
+        "version": "1.22.11"
     },
     "enqueue/dbal": {
         "version": "0.10",
@@ -137,7 +137,7 @@
         "version": "4.5.1"
     },
     "laminas/laminas-zendframework-bridge": {
-        "version": "1.4.1"
+        "version": "1.5.0"
     },
     "lcobucci/clock": {
         "version": "2.1.0"
