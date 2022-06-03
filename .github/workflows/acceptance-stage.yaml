@@ -243,6 +243,7 @@ jobs:
         run: bin/phpunit --testsuite=integration --colors=always
         env:
           DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
+          DATABASE_DSN: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
           SYMFONY_DEPRECATIONS_HELPER: disabled
 
 
@@ -364,4 +365,5 @@ jobs:
         run: bin/phpunit --testsuite=functional --colors=always
         env:
           DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
+          DATABASE_DSN: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db_test?serverVersion=13&charset=utf8
           SYMFONY_DEPRECATIONS_HELPER: disabled
