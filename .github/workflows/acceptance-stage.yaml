@@ -227,14 +227,14 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-progress --ansi --no-scripts
 
-#      - name: Run database migrations
-#        if: ${{ github.ref_name == '5.4' }}
-#        run: ./bin/console doctrine:migrations:migrate -e test -n -vv --allow-no-migration --ansi
-#        env:
-#          DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
+      - name: Run database migrations
+        if: ${{ github.ref_name == '5.4' }}
+        run: ./bin/console doctrine:migrations:migrate -e test -n -vv --allow-no-migration --ansi
+        env:
+          DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
 
       - name: Run database schema update
-#        if: ${{ github.ref_name != '5.4' }}
+        if: ${{ github.ref_name != '5.4' }}
         run: ./bin/console doctrine:schema:update -e test --force --ansi
         env:
           DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
@@ -320,14 +320,14 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-progress --ansi --no-scripts
 
-#      - name: Run database migrations
-#        if: ${{ github.ref_name == '5.4' }}
-#        run: ./bin/console doctrine:migrations:migrate -e test -n -vv --allow-no-migration --ansi
-#        env:
-#          DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
+      - name: Run database migrations
+        if: ${{ github.ref_name == '5.4' }}
+        run: ./bin/console doctrine:migrations:migrate -e test -n -vv --allow-no-migration --ansi
+        env:
+          DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
 
       - name: Run database schema update
-#        if: ${{ github.ref_name != '5.4' }}
+        if: ${{ github.ref_name != '5.4' }}
         run: ./bin/console doctrine:schema:update -e test --force --ansi
         env:
           DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
