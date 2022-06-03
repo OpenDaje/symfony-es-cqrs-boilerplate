@@ -25,6 +25,12 @@
             <directory>tests/Unit</directory>
             <directory>srcIam/tests/Unit</directory>
         </testsuite>
+        <testsuite name="integration">
+            <directory>tests/Integration</directory>
+        </testsuite>
+        <testsuite name="functional">
+            <directory>tests/Functional</directory>
+        </testsuite>
     </testsuites>
 
     <coverage processUncoveredFiles="true">
