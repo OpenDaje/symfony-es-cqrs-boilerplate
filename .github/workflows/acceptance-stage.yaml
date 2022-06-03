@@ -58,16 +58,19 @@ jobs:
     needs: [on-commit-stage-success]
     timeout-minutes: 5
     services:
-      mysql:
-        image: mariadb:10.3.34
+      pgsql:
+        image: postgres:13-alpine
         env:
-          MYSQL_ROOT_PASSWORD: test
-          MYSQL_USER: test
-          MYSQL_PASSWORD: test
-          MYSQL_DATABASE: symfony_test
+          POSTGRES_DB: ci-db_test
+          POSTGRES_PASSWORD: ci-db-password
+          POSTGRES_USER: ci-db-user
         ports:
-          - 3306/tcp
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+          - 5432/tcp
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
     strategy:
       matrix:
         php:
@@ -138,18 +141,18 @@ jobs:
 #        if: ${{ github.ref_name == '5.4' }}
 #        run: ./bin/console doctrine:migrations:migrate -e test -n -vv --allow-no-migration --ansi
 #        env:
-#          DATABASE_URL: mysql://test:test@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=mariadb-10.3.34
+#          DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
 
       - name: Run database schema update
 #        if: ${{ github.ref_name != '5.4' }}
         run: ./bin/console doctrine:schema:update -e test --force --ansi
         env:
-          DATABASE_URL: mysql://test:test@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=mariadb-10.3.34
+          DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
 
       - name: Run database schema validate
         run: ./bin/console doctrine:schema:validate -e test --ansi
         env:
-          DATABASE_URL: mysql://test:test@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=mariadb-10.3.34
+          DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
 
 
   integration-test:
@@ -159,16 +162,19 @@ jobs:
       - app-preconditions-checks
     timeout-minutes: 15
     services:
-      mysql:
-        image: mariadb:10.3.34
+      pgsql:
+        image: postgres:13-alpine
         env:
-          MYSQL_ROOT_PASSWORD: test
-          MYSQL_USER: test
-          MYSQL_PASSWORD: test
-          MYSQL_DATABASE: symfony_test
+          POSTGRES_DB: ci-db_test
+          POSTGRES_PASSWORD: ci-db-password
+          POSTGRES_USER: ci-db-user
         ports:
-          - 3306/tcp
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+          - 5432/tcp
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
     strategy:
       matrix:
         php:
@@ -225,18 +231,18 @@ jobs:
 #        if: ${{ github.ref_name == '5.4' }}
 #        run: ./bin/console doctrine:migrations:migrate -e test -n -vv --allow-no-migration --ansi
 #        env:
-#          DATABASE_URL: mysql://test:test@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=mariadb-10.3.34
+#          DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
 
       - name: Run database schema update
 #        if: ${{ github.ref_name != '5.4' }}
         run: ./bin/console doctrine:schema:update -e test --force --ansi
         env:
-          DATABASE_URL: mysql://test:test@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=mariadb-10.3.34
+          DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
 
       - name: Run only database test
         run: bin/phpunit --testsuite=integration --colors=always
         env:
-          DATABASE_URL: mysql://test:test@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=mariadb-10.3.34
+          DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
           SYMFONY_DEPRECATIONS_HELPER: disabled
 
 
@@ -247,16 +253,19 @@ jobs:
       - app-preconditions-checks
     timeout-minutes: 15
     services:
-      mysql:
-        image: mariadb:10.3.34
+      pgsql:
+        image: postgres:13-alpine
         env:
-          MYSQL_ROOT_PASSWORD: test
-          MYSQL_USER: test
-          MYSQL_PASSWORD: test
-          MYSQL_DATABASE: symfony_test
+          POSTGRES_DB: ci-db_test
+          POSTGRES_PASSWORD: ci-db-password
+          POSTGRES_USER: ci-db-user
         ports:
-          - 3306/tcp
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+          - 5432/tcp
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
     strategy:
       matrix:
         php:
@@ -315,13 +324,13 @@ jobs:
 #        if: ${{ github.ref_name == '5.4' }}
 #        run: ./bin/console doctrine:migrations:migrate -e test -n -vv --allow-no-migration --ansi
 #        env:
-#          DATABASE_URL: mysql://test:test@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=mariadb-10.3.34
+#          DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
 
       - name: Run database schema update
 #        if: ${{ github.ref_name != '5.4' }}
         run: ./bin/console doctrine:schema:update -e test --force --ansi
         env:
-          DATABASE_URL: mysql://test:test@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=mariadb-10.3.34
+          DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
 
       - name: Setup Node
         uses: actions/setup-node@v1
@@ -354,5 +363,5 @@ jobs:
       - name: Run functional testsuite
         run: bin/phpunit --testsuite=functional --colors=always
         env:
-          DATABASE_URL: mysql://test:test@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=mariadb-10.3.34
+          DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
           SYMFONY_DEPRECATIONS_HELPER: disabled
