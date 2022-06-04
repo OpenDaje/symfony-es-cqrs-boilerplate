@@ -16,6 +16,8 @@ env:
   COVERAGE_CLOVER_FUNCTIONAL_FILENAME: 'coverage-functional-test-clover.xml'
   INTEGRATION_TEST_DOC_ARTIFATC_NAME: 'Docs-integration-test-on-SHA'
   INTEGRATION_TEST_DOC_FILENAME: 'doc-integration-test.txt'
+  FUNCTIONAL_TEST_DOC_ARTIFATC_NAME: 'Docs-functional-test-on-SHA'
+  FUNCTIONAL_TEST_DOC_FILENAME: 'doc-functional-test.txt'
 
 
 jobs:
@@ -216,7 +218,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: memory_limit=-1
-          coverage: none
+          coverage: pcov
           tools: symfony
 
       - name: Get Composer Cache Directory
@@ -255,15 +257,25 @@ jobs:
           DATABASE_DSN: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
           SYMFONY_DEPRECATIONS_HELPER: disabled
 
-      - name: Get Integration test coverage artifact name
+      - name: Get integration test coverage artifact name
         id: integration-coverage-artifact-name
         run: echo "::set-output name=name::$COVERAGE_INTEGRATION_ARTIFATC_NAME-$GITHUB_SHA"
 
-      - name: Save Integration coverage reports
+      - name: Save integration coverage reports
         uses: actions/upload-artifact@v2
         with:
           name: ${{ steps.integration-coverage-artifact-name.outputs.name }}
           path: ${{ env.COVERAGE_CLOVER_INTEGRATION_FILENAME }}
+
+      - name: Get integration test doc artifact name
+        id: integration-test-doc-artifact-name
+        run: echo "::set-output name=name::$INTEGRATION_TEST_DOC_ARTIFATC_NAME-$GITHUB_SHA"
+
+      - name: Save test doc reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.integration-test-doc-artifact-name.outputs.name }}
+          path: ${{ env.INTEGRATION_TEST_DOC_FILENAME }}
 
 
   functional-test:
@@ -323,7 +335,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: memory_limit=-1
-          coverage: none
+          coverage: pcov
           tools: symfony
 
       - name: Get Composer Cache Directory
@@ -381,11 +393,34 @@ jobs:
         run: symfony server:start --port=8080 --dir=public --daemon --no-tls
 
       - name: Run functional testsuite
-        run: bin/phpunit --testsuite=functional --colors=always
+        run: |
+          bin/phpunit --testsuite=functional --colors=always \
+          --coverage-clover $COVERAGE_CLOVER_FUNCTIONAL_FILENAME \
+          --testdox-text $FUNCTIONAL_TEST_DOC_FILENAME
         env:
           DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
           DATABASE_DSN: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db_test?serverVersion=13&charset=utf8
           SYMFONY_DEPRECATIONS_HELPER: disabled
+
+      - name: Get functional test coverage artifact name
+        id: functional-coverage-artifact-name
+        run: echo "::set-output name=name::$COVERAGE_FUNCTIONAL_ARTIFATC_NAME-$GITHUB_SHA"
+
+      - name: Save functional coverage reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.functional-coverage-artifact-name.outputs.name }}
+          path: ${{ env.COVERAGE_CLOVER_FUNCTIONAL_FILENAME }}
+
+      - name: Get functional test doc artifact name
+        id: functional-test-doc-artifact-name
+        run: echo "::set-output name=name::$FUNCTIONAL_TEST_DOC_ARTIFATC_NAME-$GITHUB_SHA"
+
+      - name: Save test doc reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.functional-test-doc-artifact-name.outputs.name }}
+          path: ${{ env.FUNCTIONAL_TEST_DOC_FILENAME }}
 
 
   behat-test:

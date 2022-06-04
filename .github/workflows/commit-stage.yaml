@@ -57,7 +57,7 @@ jobs:
         id: test-doc-artifact-name
         run: echo "::set-output name=name::$UNIT_TEST_DOC_ARTIFATC_NAME-$GITHUB_SHA"
 
-      - name: Save coverage reports
+      - name: Save test doc reports
         uses: actions/upload-artifact@v2
         with:
           name: ${{ steps.test-doc-artifact-name.outputs.name }}
