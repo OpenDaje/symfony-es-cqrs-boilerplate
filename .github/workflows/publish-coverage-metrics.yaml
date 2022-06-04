@@ -26,7 +26,7 @@ jobs:
   on-commit-stage-success:
     runs-on: ubuntu-latest
     name: Event - Commit Stage Success
-    if: ${{ github.event.workflow.name == 'Commit stage' }} && ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow.name == 'Commit stage' && github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
         uses: actions/checkout@v2
@@ -40,7 +40,7 @@ jobs:
   on-acceptance-stage-success:
     runs-on: ubuntu-latest
     name: Event - Acceptance Stage Success
-    if: ${{ github.event.workflow.name == 'Acceptance stage' }} && ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow.name == 'Acceptance stage' &&  github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
         uses: actions/checkout@v2
