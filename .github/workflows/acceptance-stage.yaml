@@ -10,6 +10,12 @@ on:
 env:
   PHP_EXTENSIONS: ctype, iconv, json, curl, gd, intl, opcache, openssl, mbstring, mysql, pdo_sqlite
   PHP_EXTENSIONS_CACHE_KEY: cache-php-extensions-v1
+  COVERAGE_INTEGRATION_ARTIFATC_NAME: 'Coverage-reports-integration-on-SHA'
+  COVERAGE_FUNCTIONAL_ARTIFATC_NAME: 'Coverage-reports-functional-on-SHA'
+  COVERAGE_CLOVER_INTEGRATION_FILENAME: 'coverage-integration-test-clover.xml'
+  COVERAGE_CLOVER_FUNCTIONAL_FILENAME: 'coverage-functional-test-clover.xml'
+  INTEGRATION_TEST_DOC_ARTIFATC_NAME: 'Docs-integration-test-on-SHA'
+  INTEGRATION_TEST_DOC_FILENAME: 'doc-integration-test.txt'
 
 
 jobs:
@@ -239,12 +245,25 @@ jobs:
         env:
           DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
 
-      - name: Run only database test
-        run: bin/phpunit --testsuite=integration --colors=always
+      - name: Run only integration test
+        run: |
+          bin/phpunit --testsuite=integration --colors=always \
+          --coverage-clover $COVERAGE_CLOVER_INTEGRATION_FILENAME \
+          --testdox-text $INTEGRATION_TEST_DOC_FILENAME
         env:
           DATABASE_URL: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
           DATABASE_DSN: postgresql://ci-db-user:ci-db-password@127.0.0.1:${{ job.services.pgsql.ports['5432'] }}/ci-db?serverVersion=13&charset=utf8
           SYMFONY_DEPRECATIONS_HELPER: disabled
+
+      - name: Get Integration test coverage artifact name
+        id: integration-coverage-artifact-name
+        run: echo "::set-output name=name::$COVERAGE_INTEGRATION_ARTIFATC_NAME-$GITHUB_SHA"
+
+      - name: Save Integration coverage reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.integration-coverage-artifact-name.outputs.name }}
+          path: ${{ env.COVERAGE_CLOVER_INTEGRATION_FILENAME }}
 
 
   functional-test:
