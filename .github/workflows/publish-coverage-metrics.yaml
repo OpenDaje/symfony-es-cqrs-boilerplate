@@ -4,6 +4,7 @@ on:
   workflow_run:
     workflows:
       - Commit stage
+      - Acceptance stage
     types:
       - completed
 
@@ -25,7 +26,21 @@ jobs:
   on-commit-stage-success:
     runs-on: ubuntu-latest
     name: Event - Commit Stage Success
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow.name == 'Commit stage' }} && ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.workflow_run.head_commit.id }}
+
+      - name: Dump GHA Context
+        uses: crazy-max/ghaction-dump-context@v1
+
+
+  on-acceptance-stage-success:
+    runs-on: ubuntu-latest
+    name: Event - Acceptance Stage Success
+    if: ${{ github.event.workflow.name == 'Acceptance stage' }} && ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
         uses: actions/checkout@v2
@@ -89,3 +104,32 @@ jobs:
           fail_ci_if_error: false
         continue-on-error: true
 
+
+  publish-functional-test-report:
+    name: Publish functional test report
+    runs-on: ubuntu-18.04
+    needs: [on-acceptance-stage-success]
+    steps:
+      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.workflow_run.head_commit.id }}
+
+      - name: Download functional test coverage artifact
+        id: download-functional-test-coverage-artifact
+        run: |
+          ls -al
+          gh run download -n ${{ env.COVERAGE_FUNCTIONAL_ARTIFATC_NAME }}-${{ github.event.workflow_run.head_commit.id }}
+          ls -al
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_API_ARTIFACT_ACTION }}
+
+      - name: Upload coverage results to Codecov
+        if: ${{ (steps.download-functional-test-coverage-artifact.outcome == 'success')}}
+        uses: codecov/codecov-action@v1
+        with:
+          files: ${{ env.COVERAGE_CLOVER_FUNCTIONAL_FILENAME }}
+          name: Functional test
+          flags: functional-test
+          fail_ci_if_error: false
+        continue-on-error: true
