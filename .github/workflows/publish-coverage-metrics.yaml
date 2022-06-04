@@ -7,6 +7,8 @@ on:
       - Acceptance stage
     types:
       - completed
+    branches-ignore:
+      - 'dependabot/**'
 
 env:
   PHP_EXTENSIONS: ctype, iconv, json, curl, gd, intl, opcache, openssl, mbstring, mysql, pdo_sqlite
