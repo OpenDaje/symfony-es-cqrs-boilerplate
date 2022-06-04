@@ -6,8 +6,10 @@ on:
 env:
   PHP_EXTENSIONS: ctype, iconv, json, curl, gd, intl, opcache, openssl, mbstring, mysql, pdo_sqlite
   PHP_EXTENSIONS_CACHE_KEY: cache-php-extensions-v1
-  COVERAGE_ARTIFATC_NAME: 'coverage-reports-on-SHA'
+  COVERAGE_ARTIFATC_NAME: 'Coverage-reports-on-SHA'
   COVERAGE_CLOVER_UNIT_FILENAME: 'coverage-unit-test-clover.xml'
+  UNIT_TEST_DOC_ARTIFATC_NAME: 'Docs-unit-test-on-SHA'
+  UNIT_TEST_DOC_FILENAME: 'doc-unit-test.txt'
 
 
 jobs:
@@ -38,17 +40,28 @@ jobs:
       - name: Run unit tests
         run: |
           vendor/bin/phpunit --testsuite=unit --testdox --no-interaction --colors=always \
-          --coverage-clover $COVERAGE_CLOVER_UNIT_FILENAME
+          --coverage-clover $COVERAGE_CLOVER_UNIT_FILENAME \
+          --testdox-text $UNIT_TEST_DOC_FILENAME
 
-      - name: Get Artifact name
-        id: artifact-name
+      - name: Get Coverage artifact name
+        id: coverage-artifact-name
         run: echo "::set-output name=name::$COVERAGE_ARTIFATC_NAME-$GITHUB_SHA"
 
       - name: Save coverage reports
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ steps.artifact-name.outputs.name }}
+          name: ${{ steps.coverage-artifact-name.outputs.name }}
           path: ${{ env.COVERAGE_CLOVER_UNIT_FILENAME }}
+
+      - name: Get Test doc artifact name
+        id: test-doc-artifact-name
+        run: echo "::set-output name=name::$UNIT_TEST_DOC_ARTIFATC_NAME-$GITHUB_SHA"
+
+      - name: Save coverage reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.test-doc-artifact-name.outputs.name }}
+          path: ${{ env.UNIT_TEST_DOC_FILENAME }}
 
 
   lint-composer:
