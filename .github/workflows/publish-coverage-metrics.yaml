@@ -105,6 +105,36 @@ jobs:
         continue-on-error: true
 
 
+  publish-integration-test-report:
+    name: Publish integration test report
+    runs-on: ubuntu-18.04
+    needs: [on-acceptance-stage-success]
+    steps:
+      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.workflow_run.head_commit.id }}
+
+      - name: Download integration test coverage artifact
+        id: download-integration-test-coverage-artifact
+        run: |
+          ls -al
+          gh run download -n ${{ env.COVERAGE_INTEGRATION_ARTIFATC_NAME }}-${{ github.event.workflow_run.head_commit.id }}
+          ls -al
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_API_ARTIFACT_ACTION }}
+
+      - name: Upload coverage results to Codecov
+        if: ${{ (steps.download-integration-test-coverage-artifact.outcome == 'success')}}
+        uses: codecov/codecov-action@v1
+        with:
+          files: ${{ env.COVERAGE_CLOVER_INTEGRATION_FILENAME }}
+          name: Integration test
+          flags: integration-test
+          fail_ci_if_error: false
+        continue-on-error: true
+
+
   publish-functional-test-report:
     name: Publish functional test report
     runs-on: ubuntu-18.04
