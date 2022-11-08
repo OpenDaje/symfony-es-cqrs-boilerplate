@@ -9,16 +9,11 @@ use PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
 use PhpCsFixer\Fixer\Strict\StrictComparisonFixer;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symplify\EasyCodingStandard\ValueObject\Option;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $parameters = $containerConfigurator->parameters();
-
-    $parameters->set(Option::CACHE_DIRECTORY, __DIR__ . '/var/tools/ecs/.ecs_cache');
-
-    $parameters->set(Option::PATHS, [
+return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->paths([
         __DIR__ . '/src',
         __DIR__ . '/tests',
         __DIR__ . '/srcIam/src',
@@ -27,32 +22,36 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         __DIR__ . '/rector.php',
     ]);
 
-    $parameters->set(
-        'skip',
-        [
-            __DIR__ . '/src/Kernel.php',
-            __DIR__ . '/tests/bootstrap.php',
-            BlankLineAfterOpeningTagFixer::class,
-        ]
-    );
+    $ecsConfig->skip([
+        __DIR__ . '/src/Kernel.php',
+        __DIR__ . '/tests/bootstrap.php',
+        BlankLineAfterOpeningTagFixer::class,
+    ]);
 
-    $services = $containerConfigurator->services();
-    $services->set(DeclareStrictTypesFixer::class);
-    $services->set(BlankLineAfterNamespaceFixer::class);
-    $services->set(NoUnusedImportsFixer::class);
-    $services->set(OrderedImportsFixer::class);
-    $services->set(NativeFunctionInvocationFixer::class);
-    $services->set(FullyQualifiedStrictTypesFixer::class);
-    $services->set(StrictComparisonFixer::class);
-    $services->set(ArraySyntaxFixer::class)
-        ->call('configure', [[
-            'syntax' => 'short',
-        ]]);
+    $ecsConfig->rules([
+        BlankLineAfterNamespaceFixer::class,
+        DeclareStrictTypesFixer::class,
+        FullyQualifiedStrictTypesFixer::class,
+        NativeFunctionInvocationFixer::class,
+        NoUnusedImportsFixer::class,
+        OrderedImportsFixer::class,
+        StrictComparisonFixer::class,
+    ]);
 
-    // run and fix, one by one
-    $containerConfigurator->import(SetList::SPACES);
-    $containerConfigurator->import(SetList::ARRAY);
-    $containerConfigurator->import(SetList::CLEAN_CODE);
-    $containerConfigurator->import(SetList::PSR_12);
-    $containerConfigurator->import(SetList::DOCBLOCK);
+    $ecsConfig->ruleWithConfiguration(ArraySyntaxFixer::class, [
+        'syntax' => 'short',
+    ]);
+
+    $ecsConfig->sets([
+        SetList::ARRAY,
+        SetList::DOCBLOCK,
+        SetList::NAMESPACES,
+        SetList::SPACES,
+        SetList::PHPUNIT,
+        SetList::PSR_12,
+    ]);
+
+    //    $ecsConfig->ruleWithConfiguration(PhpUnitTestAnnotationFixer::class, [
+    //        'style' => 'annotation',
+    //    ]);
 };
