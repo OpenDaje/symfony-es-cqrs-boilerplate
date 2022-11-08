@@ -222,4 +222,4 @@ jobs:
 
       - name: Run rector
         run: ./vendor/bin/rector process --dry-run --ansi
-        continue-on-error: true
+
