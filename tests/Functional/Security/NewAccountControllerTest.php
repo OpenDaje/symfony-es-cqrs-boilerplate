@@ -23,7 +23,7 @@ class NewAccountControllerTest extends WebTestCase
                 'userId' => Uuid::uuid4()->toString(),
                 'email' => 'afakemail@example.it',
                 'password' => 'afakepassword',
-            ])
+            ], JSON_THROW_ON_ERROR)
         );
 
         self::assertResponseIsSuccessful();

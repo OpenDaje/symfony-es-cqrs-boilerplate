@@ -15,19 +15,11 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 final class DemoContext implements Context
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private ?Response $response = null;
 
-    /**
-     * @var Response|null
-     */
-    private $response;
-
-    public function __construct(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
+    public function __construct(
+        private KernelInterface $kernel
+    ) {
     }
 
     /**
@@ -35,7 +27,7 @@ final class DemoContext implements Context
      */
     public function aDemoScenarioSendsARequestTo(string $path): void
     {
-        $this->response = $this->kernel->handle(Request::create($path, 'GET'));
+        $this->response = $this->kernel->handle(Request::create($path, Request::METHOD_GET));
     }
 
     /**
