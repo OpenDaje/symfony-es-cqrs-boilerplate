@@ -221,5 +221,7 @@ jobs:
         run: composer bin rector install --no-progress --ansi
 
       - name: Run rector
-        run: ./vendor/bin/rector process --dry-run --ansi
+        run: |
+          ./bin/console debug:container
+          ./vendor/bin/rector process --dry-run --ansi
 
