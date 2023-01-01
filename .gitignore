@@ -5,7 +5,6 @@
 
 # --- REMOVE
 docker-compose*.yaml
-/docker
 todo.txt
 
 ###> symfony/framework-bundle ###
