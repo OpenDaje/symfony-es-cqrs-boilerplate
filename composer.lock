@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7ebc62d9f923eb5e968ed5907c6645f",
+    "content-hash": "569026b80a28a6a247c84b8031ae0b65",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3772,12 +3772,12 @@
             "version": "0.1.4",
             "source": {
                 "type": "git",
-                "url": "https://gitlab.com/stella-maris/clock.git",
+                "url": "https://github.com/stella-maris-solutions/clock.git",
                 "reference": "8a0a967896df4c63417385dc69328a0aec84d9cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/stella-maris%2Fclock/repository/archive.zip?sha=8a0a967896df4c63417385dc69328a0aec84d9cf",
+                "url": "https://api.github.com/repos/stella-maris-solutions/clock/zipball/8a0a967896df4c63417385dc69328a0aec84d9cf",
                 "reference": "8a0a967896df4c63417385dc69328a0aec84d9cf",
                 "shasum": ""
             },
@@ -3809,8 +3809,8 @@
                 "psr20"
             ],
             "support": {
-                "issues": "https://gitlab.com/stella-maris/clock/-/issues",
-                "source": "https://gitlab.com/stella-maris/clock/-/tree/0.1.4"
+                "issues": "https://github.com/stella-maris-solutions/clock/issues",
+                "source": "https://github.com/stella-maris-solutions/clock/tree/0.1.4"
             },
             "time": "2022-04-17T14:12:26+00:00"
         },
