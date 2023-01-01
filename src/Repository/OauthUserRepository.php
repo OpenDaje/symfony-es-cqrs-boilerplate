@@ -5,9 +5,12 @@ namespace App\Repository;
 use App\Entity\OauthUser;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Security\Core\User\User;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<OauthUser>
@@ -16,8 +19,9 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  * @method OauthUser|null findOneBy(array $criteria, array $orderBy = null)
  * @method OauthUser[]    findAll()
  * @method OauthUser[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method null loadUserByIdentifier(string $identifier)
  */
-class OauthUserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class OauthUserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, UserLoaderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -80,4 +84,23 @@ class OauthUserRepository extends ServiceEntityRepository implements PasswordUpg
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function loadUserByUsername(string $identifier)
+    {
+        $entityManager = $this->getEntityManager();
+
+        // Check if the identifier is an email address
+        if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+            return $this->findOneBy([
+                'email' => $identifier,
+            ]);
+        }
+        if (Uuid::isValid($identifier)) {
+            return $this->findOneBy([
+                'uuid' => Uuid::fromString($identifier)->toBinary(),
+            ]);
+        }
+
+        return null;
+    }
 }
