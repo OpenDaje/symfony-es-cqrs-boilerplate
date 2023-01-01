@@ -7,3 +7,7 @@ api_login_check:
 
 gesdinet_jwt_refresh_token:
   path: /api/token/refresh
+
+oauth2:
+  resource: '@LeagueOAuth2ServerBundle/Resources/config/routes.php'
+  type: php
