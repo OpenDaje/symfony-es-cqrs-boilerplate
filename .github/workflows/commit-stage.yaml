@@ -1,7 +1,12 @@
 name: Commit stage
 
 on:
-  push:
+  workflow_call:
+    # Map the workflow outputs to job outputs
+    inputs:
+      triggering-sha:
+        required: true
+        type: string
 
 env:
   PHP_EXTENSIONS: ctype, iconv, json, curl, gd, intl, opcache, openssl, mbstring, mysql, pdo_sqlite
@@ -14,16 +19,23 @@ env:
 
 jobs:
   unit-test:
-    name: Unit tests
+    name: Unit tests (php-${{ matrix.php }})
     runs-on: ubuntu-20.04
     timeout-minutes: 5
     strategy:
       matrix:
         php:
           - '8.0'
+        generate-coverage-report: [true]
+        include:
+          - php: '8.1'
+            generate-coverage-report: false
       fail-fast: true
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout on SHA-${{ inputs.triggering-sha }}
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.triggering-sha }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -38,26 +50,36 @@ jobs:
           composer install --prefer-dist --no-progress --ansi
 
       - name: Run unit tests
+        if: ${{ !matrix.generate-coverage-report }}
+        run: |
+          vendor/bin/phpunit --testsuite=unit --testdox --no-interaction --colors=always 
+
+      - name: Run unit tests with coverage
+        if: ${{ matrix.generate-coverage-report }}
         run: |
           vendor/bin/phpunit --testsuite=unit --testdox --no-interaction --colors=always \
           --coverage-clover $COVERAGE_CLOVER_UNIT_FILENAME \
           --testdox-text $UNIT_TEST_DOC_FILENAME
 
       - name: Get Coverage artifact name
+        if: ${{ matrix.generate-coverage-report }}
         id: coverage-artifact-name
         run: echo "::set-output name=name::$COVERAGE_ARTIFATC_NAME-$GITHUB_SHA"
 
       - name: Save coverage reports
+        if: ${{ matrix.generate-coverage-report }}
         uses: actions/upload-artifact@v2
         with:
           name: ${{ steps.coverage-artifact-name.outputs.name }}
           path: ${{ env.COVERAGE_CLOVER_UNIT_FILENAME }}
 
       - name: Get Test doc artifact name
+        if: ${{ matrix.generate-coverage-report }}
         id: test-doc-artifact-name
         run: echo "::set-output name=name::$UNIT_TEST_DOC_ARTIFATC_NAME-$GITHUB_SHA"
 
       - name: Save test doc reports
+        if: ${{ matrix.generate-coverage-report }}
         uses: actions/upload-artifact@v2
         with:
           name: ${{ steps.test-doc-artifact-name.outputs.name }}
@@ -74,8 +96,10 @@ jobs:
           - '8.0'
       fail-fast: true
     steps:
-      - name: Checkout
+      - name: Checkout on SHA-${{ inputs.triggering-sha }}
         uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.triggering-sha }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@2.15.0
@@ -110,8 +134,10 @@ jobs:
           - '8.0'
       fail-fast: true
     steps:
-      - name: Checkout
+      - name: Checkout on SHA-${{ inputs.triggering-sha }}
         uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.triggering-sha }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@2.15.0
@@ -145,7 +171,10 @@ jobs:
           - '8.0'
       fail-fast: true
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout on SHA-${{ inputs.triggering-sha }}
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.triggering-sha }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -174,8 +203,10 @@ jobs:
           - '8.0'
       fail-fast: true
     steps:
-      - name: Checkout
+      - name: Checkout on SHA-${{ inputs.triggering-sha }}
         uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.triggering-sha }}
 
       - name: Setup php extension cache environment
         id: cache-php-extensions

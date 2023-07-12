@@ -1,11 +1,12 @@
 name: Acceptance stage
 
 on:
-  workflow_run:
-    workflows:
-      - Commit stage
-    types:
-      - completed
+  workflow_call:
+    # Map the workflow outputs to job outputs
+    inputs:
+      triggering-sha:
+        required: true
+        type: string
 
 env:
   PHP_EXTENSIONS: ctype, iconv, json, curl, gd, intl, opcache, openssl, mbstring, mysql, pdo_sqlite
@@ -21,50 +22,36 @@ env:
 
 
 jobs:
-  on-commit-stage-success:
-    runs-on: ubuntu-20.04
-    name: Event - Commit Stage Success
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    steps:
-      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.workflow_run.head_commit.id }}
-
-      - name: Dump GHA Context
-        uses: crazy-max/ghaction-dump-context@v1
-
-
-  triggering-workflow-info:
-    runs-on: ubuntu-20.04
-    name: Triggering workflow info
-    steps:
-      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.workflow_run.head_commit.id }}
-
-      - name: info triggering workflow - branch name ${{ github.event.workflow_run.head_branch }}
-        run: echo ${{ github.event.workflow_run.head_branch }}
-
-      - name: info triggering workflow - SHA ${{ github.event.workflow_run.head_commit.id }}
-        run: echo SHA from triggering workflow ${{ github.event.workflow_run.head_commit.id }}
-
-      - name: info triggering workflow - commit message
-        run: echo commit message from triggering workflow '${{ github.event.workflow_run.head_commit.message }}'
-
-      - name: info triggering workflow - author '${{ github.event.workflow_run.head_commit.author.name }}' -'${{ github.event.workflow_run.head_commit.author.email }}'
-        run: echo author '${{ github.event.workflow_run.head_commit.author.name }}' -'${{ github.event.workflow_run.head_commit.author.email }}'
-
-      - name: info triggering workflow - committer '${{ github.event.workflow_run.head_commit.committer.name }}' -'${{ github.event.workflow_run.head_commit.committer.email }}'
-        run: echo author '${{ github.event.workflow_run.head_commit.author.name }}' -'${{ github.event.workflow_run.head_commit.author.email }}'
+#  triggering-workflow-info:
+#    runs-on: ubuntu-20.04
+#    name: Triggering workflow info
+#    steps:
+#      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
+#        uses: actions/checkout@v3
+#        with:
+#          ref: ${{ github.event.workflow_run.head_commit.id }}
+#
+#      - name: info triggering workflow - branch name ${{ github.event.workflow_run.head_branch }}
+#        run: echo ${{ github.event.workflow_run.head_branch }}
+#
+#      - name: info triggering workflow - SHA ${{ github.event.workflow_run.head_commit.id }}
+#        run: echo SHA from triggering workflow ${{ github.event.workflow_run.head_commit.id }}
+#
+#      - name: info triggering workflow - commit message
+#        run: echo commit message from triggering workflow '${{ github.event.workflow_run.head_commit.message }}'
+#
+#      - name: info triggering workflow - author '${{ github.event.workflow_run.head_commit.author.name }}' -'${{ github.event.workflow_run.head_commit.author.email }}'
+#        run: echo author '${{ github.event.workflow_run.head_commit.author.name }}' -'${{ github.event.workflow_run.head_commit.author.email }}'
+#
+#      - name: info triggering workflow - committer '${{ github.event.workflow_run.head_commit.committer.name }}' -'${{ github.event.workflow_run.head_commit.committer.email }}'
+#        run: echo author '${{ github.event.workflow_run.head_commit.author.name }}' -'${{ github.event.workflow_run.head_commit.author.email }}'
 
 
   app-preconditions-checks:
     name: App preconditions checks
     runs-on: ubuntu-20.04
-    needs: [on-commit-stage-success]
-    timeout-minutes: 5
+    #needs: [on-commit-stage-success]
+    timeout-minutes: 10
     services:
       pgsql:
         image: postgres:13-alpine
@@ -85,10 +72,10 @@ jobs:
           - '8.0'
       fail-fast: true
     steps:
-      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
+      - name: Checkout on SHA-${{ inputs.triggering-sha }}
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.workflow_run.head_commit.id }}
+          ref: ${{ inputs.triggering-sha }}
 
       - name: info triggering workflow - commit message
         run: echo commit message from triggering workflow '${{ github.event.workflow_run.head_commit.message }}'
@@ -189,10 +176,10 @@ jobs:
           - '8.0'
       fail-fast: true
     steps:
-      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
+      - name: Checkout on SHA-${{ inputs.triggering-sha }}
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.workflow_run.head_commit.id }}
+          ref: ${{ inputs.triggering-sha }}
 
       - name: info triggering workflow - commit message
         run: echo commit message from triggering workflow '${{ github.event.workflow_run.head_commit.message }}'
@@ -306,10 +293,10 @@ jobs:
           - '16.x'
       fail-fast: true
     steps:
-      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
+      - name: Checkout on SHA-${{ inputs.triggering-sha }}
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.workflow_run.head_commit.id }}
+          ref: ${{ inputs.triggering-sha }}
 
       - name: info triggering workflow - commit message
         run: echo commit message from triggering workflow '${{ github.event.workflow_run.head_commit.message }}'
@@ -451,10 +438,10 @@ jobs:
           - '16.x'
       fail-fast: true
     steps:
-      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
+      - name: Checkout on SHA-${{ inputs.triggering-sha }}
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.workflow_run.head_commit.id }}
+          ref: ${{ inputs.triggering-sha }}
 
       - name: info triggering workflow - commit message
         run: echo commit message from triggering workflow '${{ github.event.workflow_run.head_commit.message }}'
