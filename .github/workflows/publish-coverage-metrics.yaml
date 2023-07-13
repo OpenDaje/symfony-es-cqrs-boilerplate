@@ -3,8 +3,7 @@ name: Publish coverage metrics
 on:
   workflow_run:
     workflows:
-      - Commit stage
-      - Acceptance stage
+      - CD/CI
     types:
       - completed
     branches-ignore:
@@ -25,10 +24,10 @@ env:
 
 
 jobs:
-  on-commit-stage-success:
+  on-cdci-workflow-success:
     runs-on: ubuntu-latest
-    name: Event - Commit Stage Success
-    if: ${{ github.event.workflow.name == 'Commit stage' && github.event.workflow_run.conclusion == 'success' }}
+    name: Event - CdCi workflow Success
+    if: ${{ github.event.workflow.name == 'CD/CI' && github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
         uses: actions/checkout@v2
@@ -39,21 +38,35 @@ jobs:
         uses: crazy-max/ghaction-dump-context@v1
 
 
-  on-acceptance-stage-success:
-    runs-on: ubuntu-latest
-    name: Event - Acceptance Stage Success
-    if: ${{ github.event.workflow.name == 'Acceptance stage' &&  github.event.workflow_run.conclusion == 'success' }}
-    steps:
-      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.workflow_run.head_commit.id }}
-
-      - name: Dump GHA Context
-        uses: crazy-max/ghaction-dump-context@v1
+#  on-commit-stage-success:
+#    runs-on: ubuntu-latest
+#    name: Event - Commit Stage Success
+#    if: ${{ github.event.workflow.name == 'CD/CI' && github.event.workflow_run.conclusion == 'success' }}
+#    steps:
+#      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
+#        uses: actions/checkout@v2
+#        with:
+#          ref: ${{ github.event.workflow_run.head_commit.id }}
+#
+#      - name: Dump GHA Context
+#        uses: crazy-max/ghaction-dump-context@v1
+#
+#
+#  on-acceptance-stage-success:
+#    runs-on: ubuntu-latest
+#    name: Event - Acceptance Stage Success
+#    if: ${{ github.event.workflow.name == 'CD/CI' &&  github.event.workflow_run.conclusion == 'success' }}
+#    steps:
+#      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
+#        uses: actions/checkout@v2
+#        with:
+#          ref: ${{ github.event.workflow_run.head_commit.id }}
+#
+#      - name: Dump GHA Context
+#        uses: crazy-max/ghaction-dump-context@v1
 
   triggering-workflow-info:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     name: Triggering workflow info
     steps:
       - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
@@ -79,8 +92,8 @@ jobs:
 
   publish-unit-test-report:
     name: Publish unit test report
-    runs-on: ubuntu-18.04
-    needs: [on-commit-stage-success]
+    runs-on: ubuntu-latest
+    needs: [on-cdci-workflow-success]
     steps:
       - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
         uses: actions/checkout@v2
@@ -109,8 +122,8 @@ jobs:
 
   publish-integration-test-report:
     name: Publish integration test report
-    runs-on: ubuntu-18.04
-    needs: [on-acceptance-stage-success]
+    runs-on: ubuntu-latest
+    needs: [on-cdci-workflow-success]
     steps:
       - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
         uses: actions/checkout@v2
@@ -139,8 +152,8 @@ jobs:
 
   publish-functional-test-report:
     name: Publish functional test report
-    runs-on: ubuntu-18.04
-    needs: [on-acceptance-stage-success]
+    runs-on: ubuntu-latest
+    needs: [on-cdci-workflow-success]
     steps:
       - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
         uses: actions/checkout@v2

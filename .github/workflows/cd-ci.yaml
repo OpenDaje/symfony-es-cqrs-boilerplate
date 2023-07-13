@@ -1,0 +1,29 @@
+name: CD/CI
+
+on:
+  push:
+
+jobs:
+  commit-stage-workflow:
+    name: Commit Stage
+    uses: OpenDaje/symfony-es-cqrs-boilerplate/.github/workflows/commit-stage.yaml@5.4
+    secrets: inherit
+    with:
+      triggering-sha: "${{ github.sha }}"
+
+  acceptance-stage-workflow:
+    name: Acceptance Stage
+    needs:
+      - commit-stage-workflow
+    uses: OpenDaje/symfony-es-cqrs-boilerplate/.github/workflows/acceptance-stage.yaml@5.4
+    with:
+      triggering-sha: "${{ github.sha }}"
+
+#  publish-metrics-workflow:
+#    name: Publish Metrics
+#    needs:
+#      - commit-stage-workflow
+#      - acceptance-stage-workflow
+#    uses: zerai/ils-jb/.github/workflows/publish-coverage-metrics.yaml@5.4
+#    with:
+#      triggering-sha: "${{ github.sha }}"
