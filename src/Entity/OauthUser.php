@@ -33,6 +33,9 @@ class OauthUser implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'uuid', unique: true)]
     private ?Uuid $uuid = null;
 
+    /**
+     * @var Collection<int, OAuth2UserConsent>|OAuth2UserConsent[]>
+     */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: OAuth2UserConsent::class, orphanRemoval: true)]
     private Collection $oAuth2UserConsents;
 

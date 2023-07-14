@@ -21,7 +21,7 @@ class OAuth2UserConsent
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $expires = null;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::SIMPLE_ARRAY, nullable: true)]
     private array $scopes = [];
 
     #[ORM\Column(length: 255, nullable: true)]
