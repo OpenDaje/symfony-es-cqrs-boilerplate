@@ -1,6 +1,21 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Method App\\\\Entity\\\\AccessToken\\:\\:convertToJWT\\(\\) is unused\\.$#"
+			count: 1
+			path: src/Entity/AccessToken.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method App\\\\Entity\\\\OAuth2UserConsent\\:\\:setUser\\(\\) expects App\\\\Entity\\\\OauthUser, null given\\.$#"
+			count: 1
+			path: src/Entity/OauthUser.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\FirewallMapInterface\\:\\:getFirewallConfig\\(\\)\\.$#"
+			count: 1
+			path: src/EventSubscriber/AuthorizationCodeSubscriber.php
+
+		-
 			message: "#^Property IdentityAccess\\\\Application\\\\Model\\\\Identity\\\\User\\:\\:\\$email is never read, only written\\.$#"
 			count: 1
 			path: srcIam/src/Application/Model/Identity/User.php

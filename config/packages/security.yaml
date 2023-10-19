@@ -29,26 +29,37 @@ security:
 
 
 
-        login:
-            pattern: ^/api/login
-            stateless: true
-            provider: all_users
-            json_login:
-                check_path: /api/login_check
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+#        login:
+#            pattern: ^/api/login
+#            stateless: true
+#            provider: all_users
+#            json_login:
+#                check_path: /api/login_check
+#                success_handler: lexik_jwt_authentication.handler.authentication_success
+#                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+#
+#        api_token_refresh:
+#            pattern: ^/api/token/refresh
+#            stateless: true
+#            refresh_jwt:
+#                provider: all_users
+#
+#        api:
+#            pattern:   ^/api
+#            stateless: true
+#            provider: all_users
+#            jwt: ~
 
-        api_token_refresh:
-            pattern: ^/api/token/refresh
-            stateless: true
-            refresh_jwt:
-                provider: all_users
+        api_token:
+            pattern: ^/api/token$
+            security: false
 
         api:
-            pattern:   ^/api
+            pattern: ^/api
+            security: true
             stateless: true
+            oauth2: true
             provider: all_users
-            jwt: ~
 
         main:
             lazy: true
@@ -58,6 +69,10 @@ security:
                 # "login" is the name of the route created previously
                 login_path: login
                 check_path: login
+
+                enable_csrf: true
+                default_target_path: app_index
+                use_referer: true
             logout:
                 path: logout
 
@@ -70,11 +85,18 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+#        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+#        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
+#        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+
+        - { path: ^/authorize, roles: PUBLIC_ACCESS }
+        - { path: ^/login, role: PUBLIC_ACCESS }
+        - { path: ^/token, role: PUBLIC_ACCESS }
+        - { path: ^/.well-known, roles: PUBLIC_ACCESS }
+        - { path: ^/api, role: ROLE_OAUTH2_EMAIL }
+        - { path: ^/, role: ROLE_USER }
 
 when@test:
     security:
