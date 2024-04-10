@@ -249,7 +249,7 @@ jobs:
         run: echo "::set-output name=name::$COVERAGE_INTEGRATION_ARTIFATC_NAME-$GITHUB_SHA"
 
       - name: Save integration coverage reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.integration-coverage-artifact-name.outputs.name }}
           path: ${{ env.COVERAGE_CLOVER_INTEGRATION_FILENAME }}
@@ -259,7 +259,7 @@ jobs:
         run: echo "::set-output name=name::$INTEGRATION_TEST_DOC_ARTIFATC_NAME-$GITHUB_SHA"
 
       - name: Save test doc reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.integration-test-doc-artifact-name.outputs.name }}
           path: ${{ env.INTEGRATION_TEST_DOC_FILENAME }}
@@ -394,7 +394,7 @@ jobs:
         run: echo "::set-output name=name::$COVERAGE_FUNCTIONAL_ARTIFATC_NAME-$GITHUB_SHA"
 
       - name: Save functional coverage reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.functional-coverage-artifact-name.outputs.name }}
           path: ${{ env.COVERAGE_CLOVER_FUNCTIONAL_FILENAME }}
@@ -404,7 +404,7 @@ jobs:
         run: echo "::set-output name=name::$FUNCTIONAL_TEST_DOC_ARTIFATC_NAME-$GITHUB_SHA"
 
       - name: Save test doc reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.functional-test-doc-artifact-name.outputs.name }}
           path: ${{ env.FUNCTIONAL_TEST_DOC_FILENAME }}
