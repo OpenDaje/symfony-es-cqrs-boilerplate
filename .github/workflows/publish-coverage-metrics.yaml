@@ -111,7 +111,7 @@ jobs:
 
       - name: Upload coverage results to Codecov
         if: ${{ (steps.download-unit-test-coverage-artifact.outcome == 'success')}}
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v4
         with:
           files: ${{ env.COVERAGE_CLOVER_UNIT_FILENAME }}
           name: Unit test
@@ -141,7 +141,7 @@ jobs:
 
       - name: Upload coverage results to Codecov
         if: ${{ (steps.download-integration-test-coverage-artifact.outcome == 'success')}}
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v4
         with:
           files: ${{ env.COVERAGE_CLOVER_INTEGRATION_FILENAME }}
           name: Integration test
@@ -171,7 +171,7 @@ jobs:
 
       - name: Upload coverage results to Codecov
         if: ${{ (steps.download-functional-test-coverage-artifact.outcome == 'success')}}
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v4
         with:
           files: ${{ env.COVERAGE_CLOVER_FUNCTIONAL_FILENAME }}
           name: Functional test
