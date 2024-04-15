@@ -30,7 +30,7 @@ jobs:
     if: ${{ github.event.workflow.name == 'CD/CI' && github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_commit.id }}
 
@@ -44,7 +44,7 @@ jobs:
 #    if: ${{ github.event.workflow.name == 'CD/CI' && github.event.workflow_run.conclusion == 'success' }}
 #    steps:
 #      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
-#        uses: actions/checkout@v2
+#        uses: actions/checkout@v4
 #        with:
 #          ref: ${{ github.event.workflow_run.head_commit.id }}
 #
@@ -58,7 +58,7 @@ jobs:
 #    if: ${{ github.event.workflow.name == 'CD/CI' &&  github.event.workflow_run.conclusion == 'success' }}
 #    steps:
 #      - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
-#        uses: actions/checkout@v2
+#        uses: actions/checkout@v4
 #        with:
 #          ref: ${{ github.event.workflow_run.head_commit.id }}
 #
@@ -70,7 +70,7 @@ jobs:
     name: Triggering workflow info
     steps:
       - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_commit.id }}
 
@@ -96,7 +96,7 @@ jobs:
     needs: [on-cdci-workflow-success]
     steps:
       - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_commit.id }}
 
@@ -126,7 +126,7 @@ jobs:
     needs: [on-cdci-workflow-success]
     steps:
       - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_commit.id }}
 
@@ -156,7 +156,7 @@ jobs:
     needs: [on-cdci-workflow-success]
     steps:
       - name: Checkout on branch ${{ github.event.workflow_run.head_branch }}|SHA-${{ github.event.workflow_run.head_commit.id }}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_commit.id }}
 
