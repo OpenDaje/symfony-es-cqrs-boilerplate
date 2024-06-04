@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "13f3647358a8898e2bdcd92b1de6dc05",
+    "content-hash": "33df959403eb8a3cd19ce174cb7d357c",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -10329,16 +10329,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v7.0.6",
+            "version": "v7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "a014167aa1f66cb9990675840da65609d3e61612"
+                "reference": "3e1cb8c4dee341cfe96ae9fe29b1acda52a6bb16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/a014167aa1f66cb9990675840da65609d3e61612",
-                "reference": "a014167aa1f66cb9990675840da65609d3e61612",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/3e1cb8c4dee341cfe96ae9fe29b1acda52a6bb16",
+                "reference": "3e1cb8c4dee341cfe96ae9fe29b1acda52a6bb16",
                 "shasum": ""
             },
             "require": {
@@ -10370,7 +10370,8 @@
                     "Symfony\\Bridge\\PhpUnit\\": ""
                 },
                 "exclude-from-classmap": [
-                    "/Tests/"
+                    "/Tests/",
+                    "/bin/"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -10390,7 +10391,7 @@
             "description": "Provides utilities for PHPUnit, especially user deprecation notices management",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/phpunit-bridge/tree/v7.0.6"
+                "source": "https://github.com/symfony/phpunit-bridge/tree/v7.1.1"
             },
             "funding": [
                 {
@@ -10406,7 +10407,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-19T11:57:22+00:00"
+            "time": "2024-06-04T06:50:37+00:00"
         },
         {
             "name": "symfony/process",
