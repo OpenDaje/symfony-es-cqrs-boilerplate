@@ -6302,16 +6302,16 @@
         },
         {
             "name": "symfony/proxy-manager-bridge",
-            "version": "v5.4.38",
+            "version": "v5.4.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/proxy-manager-bridge.git",
-                "reference": "97fc53613a13266f8b4b12ba63d575bad9c81093"
+                "reference": "2ebc25e0174a6a244f7edada5a498f9728dc0d29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/proxy-manager-bridge/zipball/97fc53613a13266f8b4b12ba63d575bad9c81093",
-                "reference": "97fc53613a13266f8b4b12ba63d575bad9c81093",
+                "url": "https://api.github.com/repos/symfony/proxy-manager-bridge/zipball/2ebc25e0174a6a244f7edada5a498f9728dc0d29",
+                "reference": "2ebc25e0174a6a244f7edada5a498f9728dc0d29",
                 "shasum": ""
             },
             "require": {
@@ -6349,7 +6349,7 @@
             "description": "Provides integration for ProxyManager with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/proxy-manager-bridge/tree/v5.4.38"
+                "source": "https://github.com/symfony/proxy-manager-bridge/tree/v5.4.40"
             },
             "funding": [
                 {
@@ -6365,7 +6365,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-19T10:19:25+00:00"
+            "time": "2024-05-31T14:33:22+00:00"
         },
         {
             "name": "symfony/routing",
